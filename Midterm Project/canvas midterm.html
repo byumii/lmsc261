@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<body>
+    <canvas width="600" height="600" id="canvas" style="width: 600px; height: 600px;"></canvas>
+</body>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const w = canvas.width, h = canvas.height;
+
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width *= dpr, canvas.height *= dpr;
+    ctx.scale(dpr, dpr);
+
+    ctx.clearRect(0,0,w,h);
+
+    function drawBoard() {
+     ctx.fillStyle = "#BA8C63";
+     ctx.fillRect(0, 0, w, h);
+
+    
+     ctx.fillStyle = "black";
+     ctx.font = "30px serif";
+
+     ///letters top
+     const lettersTop = "ABCDEFGHIJKLM"
+     const centerX = 275;
+     const centerY= 250;
+     const radius = 200;
+     const height = 75;
+     const startAngle = Math.PI;
+    
+   
+    for (let i = 0; i < lettersTop.length; i++ ){
+        const angle = startAngle + (Math.PI / 12) * i ;
+        const x = centerX + radius * Math.cos(angle);
+        const y = centerY + height * Math.sin(angle);
+        const rotation = Math.atan2( 
+            height * Math.cos (angle),
+            -radius * Math.sin (angle)
+        );
+        ctx.save ();
+        ctx.translate (x,y);
+        ctx.rotate (rotation);
+        ctx.fillText (lettersTop [i], 0, 0)
+        ctx.restore();
+   
+    }
+    ///bottom numbers
+    const lettersBottom = "NOPQRSTUVWXYZ"
+    const bottomCenterY= 315;
+    const bottomRadius = 200;
+    const bottomHeight = 75;
+    for (let i = 0; i <lettersBottom.length; i++){
+        const angle = startAngle + (Math.PI / 12) * i;
+        const x = centerX + bottomRadius * Math.cos(angle);
+        const y = bottomCenterY + bottomHeight * Math.sin(angle);
+        const rotation = Math.atan2 (
+            bottomHeight * Math.cos (angle),
+            - bottomRadius * Math.sin (angle)
+        );
+         ctx.save ();
+        ctx.translate (x,y);
+        ctx.rotate (rotation);
+        ctx.fillText (lettersBottom [i], 0, 0)
+        ctx.restore();
+    }
+
+    /// numbers text 
+    const numbers = "1234567890";
+    const numbersX = 150;
+    const numberY = 400;
+     for (let i = 0; i <numbers.length; i++){
+        const x = numbersX + i * 30;
+        ctx.fillText (numbers [i], x, numberY);
+        
+    }
+    /// Yes text
+    const ouijaYes = "YES";
+    const yesX = 25;
+    const yesY = 100;
+     for (let i = 0; i < ouijaYes.length; i++){
+        const x = yesX + i * 30;
+        ctx.fillText (ouijaYes [i], x, yesY);
+        
+}
+    /// No Text 
+    const ouijaNo = "NO";
+    const noX = 500;
+    const noY = 100;
+     for (let i = 0; i < ouijaNo.length; i++){
+        const x = noX + i * 30;
+        ctx.fillText (ouijaNo [i], x, noY);
+
+   ///Good Bye Text
+    const ouijaGoodBye = "GOOD BYE";
+    const ouijaGoodByeX = 175
+    const ouijaGoodByeY = 500
+       for (let i = 0; i < ouijaGoodBye.length; i++){
+        const x = ouijaGoodByeX + i * 30;
+        ctx.fillText (ouijaGoodBye [i], x, ouijaGoodByeY);
+
+    }
+}
+
+}
+
+    let pieceX = w / 2;
+    let pieceY = h / 2;
+    
+    function draw() {
+        drawBoard();
+        
+    ctx.beginPath ();
+    ctx.moveTo(pieceX, pieceY - 50);
+    ctx.lineTo(pieceX + 50, pieceY + 50);
+    ctx.lineTo(pieceX - 50, pieceY + 50);
+    ctx.closePath ();
+
+    ctx.fillStyle = "#442B1F";
+    ctx.fill();
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 1;
+    ctx.stroke ();
+    }
+    
+    draw();
+    let isDragging = false;
+    
+    canvas.addEventListener("mousedown", (e) => {
+        isDragging = true;
+        
+    });
+    canvas.addEventListener("mousemove", (e) => {
+       if (isDragging){
+            pieceX = e.offsetX
+            pieceY = e.offsetY
+            draw();
+         }
+    });
+
+    canvas.addEventListener("mouseup", (e) => {
+       isDragging = false;
+    });
+    
+</script>
